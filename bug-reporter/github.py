@@ -1,4 +1,7 @@
 import requests
+import subprocess
+import os
+
 # POST /repos/:owner/:repo/issues
 API = "https://api.github.com"
 head = {'Authorization': 'token '}
@@ -16,4 +19,16 @@ def searchIssue(query, repo):
     r = requests.get("{0}/search/issues".format(API),
                      headers=head, params=params)
     results = r.json()
-    return(results["items"])
+    if results:
+        return(results["items"])
+    else:
+        return(None)
+
+def getReleaseVersion():
+    loc = os.getcwd()
+    process = subprocess.Popen(["git", "-C", loc, "describe"], stdout=subprocess.PIPE)
+    output = process.communicate()[0]
+    output = output.decode('utf-8')
+    if('fatal' in output):
+        return(False)
+    return(output.rstrip('\n'))
