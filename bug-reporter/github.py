@@ -26,9 +26,14 @@ def searchIssue(query, repo):
 
 def getReleaseVersion():
     loc = os.getcwd()
-    process = subprocess.Popen(["git", "-C", loc, "describe"], stdout=subprocess.PIPE)
-    output = process.communicate()[0]
-    output = output.decode('utf-8')
+    process = subprocess.run(["git", "-C", loc, "describe"], stdout=subprocess.PIPE)
+    output = process.stdout.decode('utf-8')
     if('fatal' in output):
         return(False)
     return(output.rstrip('\n'))
+
+def getRemotes():
+    loc = os.getcwd()
+    process = subprocess.run(["git", "-C" ,loc, "remote" ,"-v"], stdout=subprocess.PIPE)
+    output = process.stdout.decode('utf-8')
+    output = output.decode('utf-8')

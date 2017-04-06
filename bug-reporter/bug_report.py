@@ -6,11 +6,13 @@ import sys
 ans = 'y'
 
 parser = argparse.ArgumentParser()
-parser.add_argument("repo",  help="Repository name")
-parser.add_argument("owner",  help="Repository owner name")
+parser.add_argument("repo", nargs='?', help="Repository name")
+parser.add_argument("owner", nargs='?', help="Repository owner name")
 args = parser.parse_args()
 repo = args.repo
 owner = args.owner
+# if not (repo and owner):
+
 query = 'repo:{0}/{1}'.format(owner, repo)
 
 title = input("Descriptive title of the bug: (5 - 10 words): ")
@@ -23,8 +25,7 @@ if(ans == 'y'):
     # Find the version of project used
     project_version = getReleaseVersion()
     if not project_version:
-        print("Current dir is not a valid github repo!")
-        sys.exit()
+        project_version = input("Project version: ")
 
     # Find version of tech used
     print("Steps to reproduce the error: (Type end to stop) ")
